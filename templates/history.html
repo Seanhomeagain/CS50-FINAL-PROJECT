@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+    <form action="/history" method="post" class="d-flex justify-content-center">
+        <input autocomplete="off" autofocus class="form-control w-50" name="keyword" placeholder="Keyword" type="text">
+        <button class="btn btn-primary me-2" type="submit">Search</button>
+    </form>
+{% endblock %}

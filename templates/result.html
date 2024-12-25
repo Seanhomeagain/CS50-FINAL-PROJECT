@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Result
+{% endblock %}
+
+{% block main %}
+    <form action="/result" method="post">
+        {% if results %}
+            <ul class="list-group">
+                {% for result in results %}
+                    <li class="list-group-item">
+                        <h5>{{ result.title }}</h5>
+                        <p><strong>Link:</strong> <a href="{{ result.link }}" target="_blank">{{ result.link }}</a></p>
+                        {% if result.snippet %}
+                            <p><strong>Abstract:</strong> {{ result.snippet }}</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </form>
+{% endblock %}
