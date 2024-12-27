@@ -12,7 +12,8 @@
                 <th>Time</th>
                 <th>Search Term</th>
                 <th>Keywords</th>
-                <th>Results Found</th>
+                <th>Results</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -23,8 +24,14 @@
                 <td>{{ record[2] }}</td>
                 <td>{{ record[3] }}</td>
                 <td>{{ record[4] }}</td>
+                <td><a href="{{ url_for('redo_search', history_id=record[0]) }}" class="btn btn-primary">View</a> <a href="{{ url_for('delete', history_id=record[0]) }}" class="btn btn-primary">Delete</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <form action="/search" method="post" enctype="multipart/form-data"> 
+        <input type="file" id="file" name="file" accept=".doc,.docx,.pdf,image/*">
+        <input autocomplete="off" autofocus class="form-control mx-auto w-50" name="keyword" placeholder="Enter search term or upload a file" type="text">
+        <button class="btn btn-primary me-2" type="submit">Search</button>
+    </form>
 {% endblock %}

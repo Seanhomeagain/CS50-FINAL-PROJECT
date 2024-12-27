@@ -32,7 +32,7 @@ def analysis(file_path=None, term=None):
         model = genai.GenerativeModel("gemini-1.5-flash")
 
         if term:
-            response = model.generate_content(["Give me one to three technical keywords, without explaining, without preamble, without warning.", term])
+            response = model.generate_content(["Give me one to three technical keywords of the sentence, if it's one or two words, give me the word.", term])
         elif file_path:
             # Upload the file to the API
             uploaded_file = genai.upload_file(file_path)
@@ -48,11 +48,12 @@ def analysis(file_path=None, term=None):
     return None
     
 
-def search(keywords):
+def google_search(keywords, start=0):
     try:
         params = {
         "engine": "google_patents",
         "q": keywords,
+        "start": start,
         "api_key": "ac046191ca23f702441997a3454b212c0d5077d79c75f3461793523ba72dc7be"
         }
 
@@ -60,17 +61,16 @@ def search(keywords):
         results = search.get_dict()
 
         # Extract total_results
-        total_results = results["search_information"].get("total_results", 0)
-
+        total_results = results.get("search_information", {}).get("total_results", 0)
         organic_results = results.get("organic_results", [])
+        pagination = results.get("serpapi_pagination", {})
 
-        return(total_results, organic_results)
+        return total_results, organic_results, pagination
           
-    except requests.RequestException as e:
-        print(f"Request error: {e}")
-    except (KeyError, ValueError) as e:
-        print(f"Data parsing error: {e}")
-    return None
+    except Exception as e:
+        print(f"Error in search: {e}")
+        return None, None
+
 
 
 def apology(message, code=400):

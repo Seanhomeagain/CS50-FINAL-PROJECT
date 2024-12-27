@@ -10,14 +10,41 @@
             <ul class="list-group">
                 {% for result in results %}
                     <li class="list-group-item">
-                        <h5>{{ result.title }}</h5>
-                        <p><strong>Link:</strong> <a href="{{ result.link }}" target="_blank">{{ result.link }}</a></p>
+                        <h5 align="left"><strong>{{ result.publication_number }}</strong> {{ result.title }}</h5>
+                        <p align="left"><strong>Priority Date:</strong> {{ result.priority_date }} <strong>Filing Date:</strong> {{ result.filing_date }} <strong> Publication Date:</strong> {{ result.publication_date }}</p>
+                        <p align="left"><strong>Assignee:</strong> {{ result.assignee }} <strong>Inventor:</strong> {{ result.inventor }}</p>
                         {% if result.snippet %}
-                            <p><strong>Abstract:</strong> {{ result.snippet }}</p>
+                            <p align="left"><strong>Abstract:</strong> {{ result.snippet }}</p>
                         {% endif %}
+                        <p align="left">
+                            <strong>Status:</strong>
+                            {% for country in result.country_status %}
+                                {{ country }}
+                            {% endfor %}
+                        </p>
+                        <p align="left"><strong>Link:</strong> <a href="{{ result.serpapi_link }}" target="_blank">{{ result.serpapi_link }}</a></p>
                     </li>
                 {% endfor %}
             </ul>
+            
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!-- Previous Page Button -->
+                    {% if current_page > 0 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('search', page=current_page-1, keywords=keywords) }}">Previous</a>
+                        </li>
+                    {% endif %}
+            
+                    <!-- Next Page Button -->
+                    {% if pagination.next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('search', page=current_page+1, keywords=keywords) }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
         {% else %}
             <p>No results found.</p>
         {% endif %}

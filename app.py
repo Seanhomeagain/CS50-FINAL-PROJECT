@@ -6,7 +6,7 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
-from helpers import analysis, search, login_required, apology
+from helpers import analysis, google_search, login_required, apology
 
 # Configure application
 app = Flask(__name__)
@@ -17,11 +17,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure upload folder
-UPLOAD_FOLDER = "temp_uploads"
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
-# Ensure the folder exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config["UPLOAD_FOLDER"] = "temp_uploads"
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 @app.after_request
 def after_request(response):
@@ -70,11 +67,6 @@ def search():
         search_term = None
         keywords = None
         total_result = 0
-
-        if request.files:
-            print("Files received:", request.files)
-        else:
-            print("No files received")
         
         if not term and not file:
             return apology("Please input keyword or upload file")
@@ -84,14 +76,21 @@ def search():
             file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(file_path)
             print(f"File saved to {file_path}")
-            search_term = filename
-            keywords = analysis(file_path, term=None)  # analysis keywords
+            search_term = f"File: {filename}"
+            keywords = analysis(file_path=file_path, term=None)  # analysis keywords
         elif term:
             search_term = term
-            keywords = analysis(term, file_path=None) # analysis keywords
+            keywords = analysis(term=term, file_path=None) # analysis keywords
 
-        total_result, organic_results = search(keywords) # use google patent search
+        if keywords:
+            print(f"Analyzed keywords: {keywords}")
 
+            current_page = request.args.get("page", 0, type=int)
+            start = current_page * 10  # Assuming 10 results per page
+            total_result, organic_results, pagination = google_search(keywords, start=start) # use google patent search
+        else:
+            return apology("Failed to analyze keywords")
+        
         if not organic_results:
             return apology("No result")
         else:
@@ -100,16 +99,61 @@ def search():
             cur = con.cursor()
             cur.execute(
                 "INSERT INTO history (user_id, search_time, search_term, keywords, result) VALUES (?, ?, ?, ?, ?)",
-                (user_id, search_time, search_term, ", ".join(keywords) if keywords else None, total_result),
+                (user_id, search_time, search_term, keywords, total_result),
             )
             con.commit()
             con.close()
-            return render_template("result.html", results=organic_results)
-        
-        # Record the search in the database
 
-
+            return render_template("result.html", results=organic_results, pagination=pagination, current_page=current_page)
     return render_template("search.html")
+
+
+@app.route("/redo_search/<int:history_id>")
+@login_required
+def redo_search(history_id):
+    """Redo a previous search using saved keywords"""
+    user_id = session.get("user_id")
+    if not user_id:
+        return apology("User not logged in")
+
+    con = sqlite3.connect("aps.db")
+    cur = con.cursor()
+    cur.execute("SELECT keywords FROM history WHERE id = ? AND user_id = ?", (history_id, user_id))
+    keywords = cur.fetchone()
+    con.close()
+
+    if not keywords:
+        return apology("History not found")
+    
+    current_page = request.args.get("page", 0, type=int)
+    start = current_page * 10  # Assuming 10 results per page
+    total_result, organic_results, pagination = google_search(keywords, start=start)
+
+    if not organic_results:
+        return apology("No result found during re-search")
+    return render_template("result.html", results=organic_results, pagination=pagination, current_page=current_page)
+
+
+@app.route("/delete/<int:history_id>")
+@login_required
+def delete(history_id):
+    """Delete a previous search"""
+    user_id = session.get("user_id")
+    if not user_id:
+        return apology("User not logged in")
+
+    if history_id:
+        con = sqlite3.connect("aps.db")
+        cur = con.cursor()
+        cur.execute("DELETE FROM history WHERE id = ? AND user_id = ?", (history_id, user_id))
+        con.commit()
+        print(f"Delete the row {history_id} from user {user_id}")
+        con.close()
+
+    else:
+        return apology("Delete failed!")
+    
+    return redirect("/")
 
 
 @app.route("/login", methods=["GET", "POST"])
