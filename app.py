@@ -85,7 +85,7 @@ def search():
         if keywords:
             print(f"Analyzed keywords: {keywords}")
 
-            total_result, organic_results, pagination = google_search(keywords) # use google patent search
+            total_result, organic_results = google_search(keywords) # use google patent search
         else:
             return apology("Failed to analyze keywords")
         
@@ -102,7 +102,7 @@ def search():
             con.commit()
             con.close()
 
-            return render_template("result.html", results=organic_results, pagination=pagination)
+            return render_template("result.html", results=organic_results)
     return render_template("search.html")
 
 
