@@ -1,5 +1,5 @@
 # AI Patent Search
-#### Video Demo:  [<URL HERE>](https://youtu.be/DQgnEHrdX6Q)
+#### Video Demo:  https://youtu.be/DQgnEHrdX6Q
 #### Description:
 
 This is a Flask-based web application that allows users to search for patents by putting some description or by uploading files. It uses AI to extract technical keywords and integrates with Google Patents to fetch search results. The application also includes a history feature to track previous searches and view the search results again.
