@@ -46,3 +46,84 @@ This is a Flask-based web application that allows users to search for patents by
    git clone <repository-url>
    cd <repository-folder>
 
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+
+3. Set up environment variables:
+   Create a .env file in the root directory and add the following:
+   ```bash
+   API_KEY=<your_genai_api_key>
+   SERPAPI_KEY=<your_serpapi_api_key>
+   UPLOAD_FOLDER=./temp_uploads
+
+ 4. Initialize the database:
+   ```bash
+   flask db init
+   flask db migrate
+   flask db upgrade
+```
+ 5. Run the application:
+   ```bash
+   flask run
+```
+
+## File Structure
+
+```bash
+.
+├── app.py                  # Main application file
+├── helpers.py              # Utility functions (e.g., analysis, search)
+├── static/                 # Static assets (CSS, JS, images)
+├── templates/              # HTML templates (search.html, result.html, etc.)
+├── temp_uploads/           # Temporary storage for uploaded files
+├── aps.db                  # SQLite database file
+├── requirements.txt        # Python dependencies
+├── README.md               # Project documentation
+└── .env                    # Environment variables
+
+```
+## How to Use
+Log in:
+Access the app by logging into your account. If you’re not registered, create an account.
+
+Perform a Search:
+
+Enter a keyword or upload a file on the search page.
+The AI will analyze your input and extract keywords.
+View results directly.
+
+Click the "Home" tab or the LOGO to view past searches.
+Use the "View" button to revisit results or redo a search.
+Use the "Delete" button to delete a search result.
+
+## Disclaimer
+This project is intended solely for research and learning purposes. It is not designed for commercial use.
+
+Ensure that your use of the application complies with applicable laws and regulations.
+Protect your personal data and privacy when using this application, especially when uploading files or performing online searches.
+The authors are not responsible for any misuse of this tool or any consequences arising from its use.
+
+## Future Improvements
+Add advanced search filters (e.g., by date, patent type, or region).
+Implement user-friendly error handling and feedback.
+Support other languages for search terms and results.
+Provide detailed analysis of patents (e.g., assignees, inventors, classifications).
+
+## Acknowledgments
+Flask for the web framework
+SerpAPI for Google Patents integration
+GenAI for AI-powered keyword extraction
+Bootstrap for front-end styling
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contact
+For questions or feedback, feel free to reach out to:
+
+Author: Xin Wang
+Email: seansoochow@gmail.com
+Copy code
+
+
