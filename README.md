@@ -19,23 +19,10 @@ This is a Flask-based web application that allows users to search for patents by
   - Tracks all user searches, including:
     - Search number
     - Time of search
-    - Search term (keywords or file name)
+    - Search term (A short technical description or upload a file)
     - Extracted AI keywords
     - Total number of results
   - Includes a "View" button to revisit search results.
-
-- **Pagination**  
-  - Supports navigating through multiple pages of search results.
-
----
-
-## Prerequisites
-
-- **Python**: Version 3.8 or higher
-- **Flask**: A Python web framework
-- **SQLite**: A lightweight database
-- **SerpAPI**: Used for fetching Google Patents data
-- **GenAI API**: Used for AI-powered keyword extraction
 
 ---
 
@@ -57,32 +44,12 @@ This is a Flask-based web application that allows users to search for patents by
    SERPAPI_KEY=<your_serpapi_api_key>
    UPLOAD_FOLDER=./temp_uploads
 
- 4. Initialize the database:
-   ```bash
-   flask db init
-   flask db migrate
-   flask db upgrade
-```
- 5. Run the application:
+ 4. Run the application:
    ```bash
    flask run
 ```
+---
 
-## File Structure
-
-```bash
-.
-├── app.py                  # Main application file
-├── helpers.py              # Utility functions (e.g., analysis, search)
-├── static/                 # Static assets (CSS, JS, images)
-├── templates/              # HTML templates (search.html, result.html, etc.)
-├── temp_uploads/           # Temporary storage for uploaded files
-├── aps.db                  # SQLite database file
-├── requirements.txt        # Python dependencies
-├── README.md               # Project documentation
-└── .env                    # Environment variables
-
-```
 ## How to Use
 Log in:
 Access the app by logging into your account. If you’re not registered, create an account.
@@ -97,6 +64,8 @@ Click the "Home" tab or the LOGO to view past searches.
 Use the "View" button to revisit results or redo a search.
 Use the "Delete" button to delete a search result.
 
+---
+
 ## Disclaimer
 This project is intended solely for research and learning purposes. It is not designed for commercial use.
 
@@ -104,20 +73,7 @@ Ensure that your use of the application complies with applicable laws and regula
 Protect your personal data and privacy when using this application, especially when uploading files or performing online searches.
 The authors are not responsible for any misuse of this tool or any consequences arising from its use.
 
-## Future Improvements
-Add advanced search filters (e.g., by date, patent type, or region).
-Implement user-friendly error handling and feedback.
-Support other languages for search terms and results.
-Provide detailed analysis of patents (e.g., assignees, inventors, classifications).
-
-## Acknowledgments
-Flask for the web framework
-SerpAPI for Google Patents integration
-GenAI for AI-powered keyword extraction
-Bootstrap for front-end styling
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
 
 ## Contact
 For questions or feedback, feel free to reach out to:
