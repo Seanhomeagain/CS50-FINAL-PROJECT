@@ -48,12 +48,12 @@ def analysis(file_path=None, term=None):
     return None
     
 
-def google_search(keywords, start=0):
+def google_search(keywords):
     try:
         params = {
         "engine": "google_patents",
         "q": keywords,
-        "start": start,
+        "num": 100,
         "api_key": "ac046191ca23f702441997a3454b212c0d5077d79c75f3461793523ba72dc7be"
         }
 
@@ -63,9 +63,8 @@ def google_search(keywords, start=0):
         # Extract total_results
         total_results = results.get("search_information", {}).get("total_results", 0)
         organic_results = results.get("organic_results", [])
-        pagination = results.get("serpapi_pagination", {})
 
-        return total_results, organic_results, pagination
+        return total_results, organic_results
           
     except Exception as e:
         print(f"Error in search: {e}")

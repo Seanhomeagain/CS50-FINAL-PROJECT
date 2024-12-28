@@ -85,9 +85,7 @@ def search():
         if keywords:
             print(f"Analyzed keywords: {keywords}")
 
-            current_page = request.args.get("page", 0, type=int)
-            start = current_page * 10  # Assuming 10 results per page
-            total_result, organic_results, pagination = google_search(keywords, start=start) # use google patent search
+            total_result, organic_results, pagination = google_search(keywords) # use google patent search
         else:
             return apology("Failed to analyze keywords")
         
@@ -104,7 +102,7 @@ def search():
             con.commit()
             con.close()
 
-            return render_template("result.html", results=organic_results, pagination=pagination, current_page=current_page)
+            return render_template("result.html", results=organic_results, pagination=pagination)
     return render_template("search.html")
 
 
@@ -124,14 +122,11 @@ def redo_search(history_id):
 
     if not keywords:
         return apology("History not found")
-    
-    current_page = request.args.get("page", 0, type=int)
-    start = current_page * 10  # Assuming 10 results per page
-    total_result, organic_results, pagination = google_search(keywords, start=start)
+    total_result, organic_results = google_search(keywords)
 
     if not organic_results:
         return apology("No result found during re-search")
-    return render_template("result.html", results=organic_results, pagination=pagination, current_page=current_page)
+    return render_template("result.html", results=organic_results)
 
 
 @app.route("/delete/<int:history_id>")

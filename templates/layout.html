@@ -31,10 +31,8 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/search">Search</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/result">Result</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/download">Download</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
@@ -62,18 +60,25 @@
         </main>
 
         <footer class="mb-5">
-            <p class="mb-3 small text-center text-muted">
-                by Xin Wang
+            <p class="mb-2 small text-center text-muted">
+                &copy; by Xin Wang. All rights reserved.
             </p>
 
             <p class="mb-3 small text-center text-muted">
-                Data provided by <a href="https://patents.google.com//">Google</a>
+                Data provided by <a href="https://patents.google.com//">Google Patents</a>
+                This tool is for research and learning purposes only.
+            </p>
+
+            <p class="mb-2 small text-center text-muted">
+                Contact: <a href="mailto:seansoochow@gmail.com">seansoochow@gmail.com</a>
             </p>
 
             <form action="https://validator.w3.org/check" class="text-center" enctype="multipart/form-data" method="post" target="_blank">
                 <input name="doctype" type="hidden" value="HTML5">
                 <input name="fragment" type="hidden">
-                <input alt="Validate" src="/static/I_heart_validator.png" type="image"> <!-- https://validator.w3.org/ -->
+                <button class="btn btn-link p-0 small text-muted" type="submit" aria-label="Validate HTML">
+                    <img alt="Validate this page with the W3C Validator" src="/static/I_heart_validator.png" style="width: 120px; height: auto;">
+                </button>
             </form>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -88,7 +93,5 @@
                 });
             </script>
         </footer>
-
     </body>
-
 </html>
