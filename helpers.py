@@ -50,11 +50,13 @@ def analysis(file_path=None, term=None):
 
 def google_search(keywords):
     try:
+        load_dotenv()
+        serpapi_key=os.environ["SERPAPI_KEY"]
         params = {
         "engine": "google_patents",
         "q": keywords,
         "num": 100,
-        "api_key": "ac046191ca23f702441997a3454b212c0d5077d79c75f3461793523ba72dc7be"
+        "api_key": serpapi_key
         }
 
         search = GoogleSearch(params)
